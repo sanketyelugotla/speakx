@@ -73,7 +73,8 @@ h2 {
 }
 
 .results {
-    margin: 60px 0;
+    display: flex;
+    margin: 80px 0;
 }
 
 .center {

@@ -4,7 +4,7 @@ import { CiSearch } from "react-icons/ci";
 import "./Search.css"
 import { useReducer } from "react";
 
-export default function Search({ title, setTitle, inputChanged, handleSearch, filterButtons, setFilterButtons }) {
+export default function Search({ title, setTitle, handleSearch, filterButtons, setFilterButtons }) {
     const [isInputOpen, setIsInputOpen] = useState(false);
     function openInput() {
         setIsInputOpen(true)
@@ -26,7 +26,6 @@ export default function Search({ title, setTitle, inputChanged, handleSearch, fi
 
     const hasMounted = useRef(0)
     useEffect(() => {
-        console.log("effect")
         if (hasMounted.current > 2) {
           handleSearch();
         } else {
@@ -55,14 +54,14 @@ export default function Search({ title, setTitle, inputChanged, handleSearch, fi
                         id="anagram"
                         className={`f-button ${filterButtons.anagram ? "active" : ""}`}
                         onClick={handleFilterButtonClick}
-                        >
+                    >
                         ANAGRAM
                     </button>
                     <button
                         id="read"
                         className={`f-button ${filterButtons.read ? "active" : ""}`}
                         onClick={handleFilterButtonClick}
-                        >
+                    >
                         READ ALONG
                     </button>
                     <button

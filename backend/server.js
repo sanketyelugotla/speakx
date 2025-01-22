@@ -15,7 +15,7 @@ let db;
 let collection;
 
 // Establish connection to MongoDB once when the app starts
-const connectToMongoDB = async () => {
+async function connectToMongoDB() {
     try {
         // Create a new MongoClient instance
         client = new MongoClient(connection_url);
@@ -38,47 +38,36 @@ connectToMongoDB();
 // API route to search by title
 // API route to search by title with pagination
 app.get('/api/search', async (req, res) => {
-    const titleToSearch = req.query.title || ''; // Get the title from query params
-    const page = parseInt(req.query.page) || 1; // Current page, default to 1
-    const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
-
+    const { title = '', anagram, read, mcq } = req.query;
+  
     try {
-        if (!collection) {
-            return res.status(500).json({ message: 'Database connection is not available.' });
-        }
-
-        // Calculate the number of documents to skip
-        const skip = (page - 1) * pageSize;
-
-        // Perform search with pagination
-        const results = await collection
-            .find({ title: { $regex: titleToSearch, $options: 'i' } })
-            .skip(skip)
-            .limit(pageSize)
-            .toArray();
-
-        // Count the total number of documents matching the search criteria
-        const totalDocuments = await collection.countDocuments({ title: { $regex: titleToSearch, $options: 'i' } });
-
-        if (results.length > 0) {
-            res.json({
-                data: results,
-                pagination: {
-                    currentPage: page,
-                    pageSize: pageSize,
-                    totalDocuments: totalDocuments,
-                    totalPages: Math.ceil(totalDocuments / pageSize),
-                },
-            });
-        } else {
-            res.status(404).json({ message: 'No document found with the specified title.' });
-        }
+      if (!collection) {
+        return res.status(500).json({ message: 'Database connection is not available.' });
+      }
+  
+      // Initialize the MongoDB query object
+      const query = {
+        title: { $regex: title, $options: 'i' },
+      };
+  
+      // Add type filters to the query if they are present in the request
+      if (anagram) query.type = 'anagram';
+      if (read) query.type = 'read';
+      if (mcq) query.type = 'mcq';
+  
+      const results = await collection.find(query).toArray();
+  
+      if (results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404).json({ message: 'No document found with the specified criteria.' });
+      }
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+      console.error('Error:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-});
-
+  });
+  
 
 // Start the server
 const port = process.env.PORT || 3000;
