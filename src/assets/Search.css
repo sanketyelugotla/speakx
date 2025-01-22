@@ -1,0 +1,26 @@
+.filter-buttons {
+    display: flex;
+    margin-top: 80px;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 600px;
+
+
+    .f-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        color: black;
+        height: 35px;
+        width: 130px;
+        /* padding: 10px 15px; */
+        border-radius: 20px;
+        border: none;
+    }
+
+    .f-button.active {
+        background-color: black;
+        color: white;
+    }
+}

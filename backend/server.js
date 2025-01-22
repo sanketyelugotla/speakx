@@ -36,23 +36,41 @@ const connectToMongoDB = async () => {
 connectToMongoDB();
 
 // API route to search by title
+// API route to search by title with pagination
 app.get('/api/search', async (req, res) => {
-    const titleToSearch = req.query.title; // Get the title from query params
+    const titleToSearch = req.query.title || ''; // Get the title from query params
+    const page = parseInt(req.query.page) || 1; // Current page, default to 1
+    const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
 
     try {
         if (!collection) {
-            // If collection is not yet initialized, return an error
             return res.status(500).json({ message: 'Database connection is not available.' });
         }
 
-        // Search for a document with a specific title using regular expression
-        const result = await collection.find({ title: { $regex: titleToSearch, $options: 'i' } }).limit(20).toArray();
+        // Calculate the number of documents to skip
+        const skip = (page - 1) * pageSize;
 
-        if (result.length > 0) {
-            // If documents are found, return them
-            res.json(result);
+        // Perform search with pagination
+        const results = await collection
+            .find({ title: { $regex: titleToSearch, $options: 'i' } })
+            .skip(skip)
+            .limit(pageSize)
+            .toArray();
+
+        // Count the total number of documents matching the search criteria
+        const totalDocuments = await collection.countDocuments({ title: { $regex: titleToSearch, $options: 'i' } });
+
+        if (results.length > 0) {
+            res.json({
+                data: results,
+                pagination: {
+                    currentPage: page,
+                    pageSize: pageSize,
+                    totalDocuments: totalDocuments,
+                    totalPages: Math.ceil(totalDocuments / pageSize),
+                },
+            });
         } else {
-            // If no documents are found, return an appropriate message
             res.status(404).json({ message: 'No document found with the specified title.' });
         }
     } catch (error) {
@@ -60,6 +78,7 @@ app.get('/api/search', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 // Start the server
 const port = process.env.PORT || 3000;
