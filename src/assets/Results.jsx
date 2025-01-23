@@ -32,7 +32,7 @@ export default function Results({ isVisible, error, result, blocks }) {
 
   const displayMCQ = (item, index) => (
     <div key={item._id?.$oid || item.title} className='que'>
-      <p className='q'>{index + 1}. {item.title}</p>
+      <p className='q'>{index + 1}. {item.title}({item.type})</p>
       <ol>
         {item.options.map((opt, key) => (
           <li key={key}>{opt.text}</li>
@@ -46,7 +46,7 @@ export default function Results({ isVisible, error, result, blocks }) {
       .sort((a, b) => a.sort - b.sort);
     return (
       <div className='que'>
-        <strong><p className='q'>{index + 1}. {item.title}</p></strong>
+        <strong><p className='q'>{index + 1}. {item.title}({item.type})</p></strong>
         <ol>
           {shuffledBlocks.map((block, index) => (
             <li>{block.text}</li>
@@ -72,9 +72,9 @@ export default function Results({ isVisible, error, result, blocks }) {
                   return displayMCQ(item, index);
                 } else if (item.type === "READ_ALONG") {
                   return (
-                    <div key={index}>
-                      <p className='q'>{index + 1}. {item.title}</p>
-                      <p>Type: {item.type}</p>
+                    <div key={index} className='que'>
+                      <p className='q'>{index + 1}. {item.title}({item.type})</p>
+                      <p >Type: {item.type}</p>
                     </div>
                   );
                 } else {
