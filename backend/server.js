@@ -32,24 +32,28 @@ connectToMongoDB();
 
 // API route to search by title with pagination
 app.get('/api/search', async (req, res) => {
-    const { title = '', anagram, read, mcq, page = 1, limit = 10 } = req.query;
+    const { title = '', anagram, read, mcq, page = 1, limit = 50 } = req.query;
 
     try {
         if (!collection) {
             return res.status(500).json({ message: 'Database connection is not available.' });
         }
 
-        const query = { title: { $regex: title, $options: 'i' } };
+        const query = { title: { $regex: "^" + title, $options: 'i' } };
+        console.log(query);
+        
 
         const types = [];
-        if (anagram) types.push('anagram');
-        if (read) types.push('read');
-        if (mcq) types.push('mcq');
+        if (anagram) types.push('ANAGRAM');
+        if (read) types.push('READ_ALONG');
+        if (mcq) types.push('MCQ');
         if (types.length) query.type = { $in: types };
 
         const pageNumber = parseInt(page, 10);
         const limitNumber = parseInt(limit, 10);
 
+        // console.log(query)
+        
         const results = await collection
             .find(query)
             .skip((pageNumber - 1) * limitNumber)
