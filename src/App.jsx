@@ -32,10 +32,8 @@ export default function App() {
       }
 
       const data = await response.json();
-      console.log(data)
-      if (JSON.stringify(result) !== JSON.stringify(data)) {
-        setResult(data);
-      }
+      setResult(data);
+      // console.log(result)
       setIsVisible(true);
       setError(null);
     } catch (error) {

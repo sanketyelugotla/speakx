@@ -27,6 +27,7 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
     const hasMounted = useRef(0)
     useEffect(() => {
         if (hasMounted.current > 2) {
+            console.log("Use Effect")
           handleSearch();
         } else {
           hasMounted.current = hasMounted.current + 1;
