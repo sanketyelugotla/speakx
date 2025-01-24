@@ -50,9 +50,9 @@ export default function Results({ isVisible, error, result }) {
             <li key={key}>{opt.text}</li>
           ))}
         </ol>
-        <button onClick={() => toggleSolution(index)}>View Solution</button>
+        <button className={`sol-btn ${visibleSolutions[index] ? "active" : ""}`} onClick={() => toggleSolution(index)}>View Solution</button>
         {visibleSolutions[index] && (
-          <p className='q'><strong>Solution:</strong> {correctAnswer}</p>
+          <p className='q'><strong>Solution:</strong> <span>{correctAnswer}</span></p>
         )}
       </div>
     );
@@ -70,9 +70,9 @@ export default function Results({ isVisible, error, result }) {
             <li key={idx}>{block.text}</li>
           ))}
         </ol>
-        <button onClick={() => toggleSolution(index)}>View Solution</button>
+        <button className={`sol-btn ${visibleSolutions[index] ? "active" : ""}`} onClick={() => toggleSolution(index)}>View Solution</button>
         {visibleSolutions[index] && (
-          <p className='q'><strong>Solution:</strong> {item.solution}</p>
+          <p className='q'><strong>Solution:</strong> <span>{item.solution}</span></p>
         )}
       </div>
     );
@@ -80,45 +80,50 @@ export default function Results({ isVisible, error, result }) {
 
   return (
     <div className={`docs ${isVisible ? '' : 'hide'}`}>
-      <p className='question'>?</p>
-      <p className='exclamation'>!</p>
       {error && <p className="red">{error}</p>}
 
       {validResult.length > 0 && (
         <div className="res_pag">
+          <p className='question'>?</p>
+          <p className='exclamation'>!</p>
           <div className='scrollable'>
             <div className='inside'>
               {currentItems.map((item, index) => {
                 if (item.type === "MCQ") {
-                  return displayMCQ(item, index);
+                  return displayMCQ(item, (itemsPerPage * (currentPage - 1)) + index);
                 } else if (item.type === "READ_ALONG") {
                   return (
                     <div key={index} className='que'>
-                      <p className='q'>{index + 1}. {item.title} ({item.type})</p>
-                      <p>Type: {item.type}</p>
+                      <p className='q'><strong>{(itemsPerPage * (currentPage - 1)) + index + 1}. {item.title} ({item.type})</strong></p>
+                      {/* <p>Type: {item.type}</p> */}
                     </div>
                   );
                 } else {
-                  return displayBlocks(item, index);
+                  return displayBlocks(item, (itemsPerPage * (currentPage - 1)) + index);
                 }
               })}
             </div>
           </div>
           <div className="pagination">
             {/* Previous Button */}
-            {createButton(<img className='arrows' src='./public/left_arrow.png' alt="Left Arrow" />, currentPage - 1, currentPage === 1, true)}
+            {createButton(<img className='arrows' src='./left_arrow.png' alt="Left Arrow" />, currentPage - 1, currentPage === 1, true)}
 
             {/* Page Numbers */}
-            {Array.from({ length: Math.min(totalPages, 5) }, (_, index) => {
+            {Array.from({ length: Math.min(totalPages, 4) }, (_, index) => {
               const page = Math.max(1, currentPage - 2) + index;
               return (
                 page <= totalPages &&
                 createButton(page, page, currentPage === page)
               );
             })}
-
+            {currentPage < totalPages - 1 && (
+              <>
+                <span className='dots'>....</span>
+                {createButton(totalPages, totalPages, currentPage === totalPages)}
+              </>
+            )}
             {/* Next Button */}
-            {createButton(<img className='arrows' src='./public/right-arrow.png' alt="Right Arrow" />, currentPage + 1, currentPage === totalPages)}
+            {createButton(<img className='arrows' src='./right-arrow.png' alt="Right Arrow" />, currentPage + 1, currentPage === totalPages, true)}
           </div>
         </div>
       )}

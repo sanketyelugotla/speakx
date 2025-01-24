@@ -1,4 +1,7 @@
 .heading-container {
+    font-family: "Volkhov";
+    /* font-family: Nico Moji, sans-serif; */
+    letter-spacing: 2px;
     margin: 30px 0;
     display: flex;
     justify-content: center;
@@ -27,6 +30,15 @@
     font-size: 40px;
 }
 
+.search-icon-inp {
+    position: absolute;
+    top: 73px;
+    left: -80px;
+    font-size: 34px;
+    z-index: 2;
+    pointer-events: none;
+}
+
 .input {
     display: flex;
     flex-direction: column;
@@ -35,19 +47,24 @@
     height: 150px;
 
     .title-input {
+        font-family: "Poppins";
         position: absolute;
         top: 65px;
         transition: all 1s ease;
-        width: 650px;
+        width: 700px;
         height: 50px;
-        /* border: 1px solid black; */
         border: none;
         border-radius: 10px;
         background-color: white;
         color: black;
-        padding: 0 30px;
+        padding: 0 30px 0 60px;
         font-size: 20px;
         box-shadow: 0 0 5px 1px rgb(155, 152, 152);
+    }
+
+    .title-input:focus {
+        box-shadow: 0 0 10px 1px rgb(155, 152, 152);
+        
     }
 
     .input-open {
@@ -96,6 +113,7 @@ h2 {
     opacity: 1;
 
     .f-button {
+        font-family: Montserrat;
         z-index: 2;
         display: flex;
         align-items: center;
@@ -108,10 +126,15 @@ h2 {
         border-radius: 10px;
         /* border: 1px solid rgb(52, 52, 160); */
         border: 1px solid black;
+        transition: all 0.3s ease;
     }
 
     .f-button:hover {
         cursor: pointer;
+        background-color: rgba(52, 52, 160, 0.633);
+        /* background-color: rgba(0, 188, 240, 0.595); */
+        color: white;
+
         /* border: 1px solid rgb(52, 52, 160); */
         /* background-color: rgb(52, 52, 160); */
         /* color: white; */

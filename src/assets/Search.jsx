@@ -39,9 +39,10 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
             {/* <h1>{isInputOpen ? search : begin}</h1> */}
             <div className="heading-container">
                 <h1 className={`smooth ${isInputOpen ? "closed" : ""}`}>Click to begin</h1>
-                <h1 className={`smooth ${isInputOpen ? "" : "closed"}`}>Search by Title</h1>
+                <h1 className={`smooth ${isInputOpen ? "" : "closed"}`}>Question Bank</h1>
             </div>
             {isInputOpen ? "" : <CiSearch className="search-icon" onClick={openInput} />}
+            <CiSearch className={`search-icon-inp ${isInputOpen ? "" : "input-open"}`} />
             <input
                 className={`title-input ${isInputOpen ? "" : "input-open"}`}
                 type="text"

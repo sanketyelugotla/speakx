@@ -1,5 +1,6 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
+  /* font-family: Montserrat; */
   line-height: 1.5;
   font-weight: 400;
 
@@ -16,4 +17,25 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/fonts/Montserrat.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nico Moji';
+  src: url('./assets/fonts/NicoMoji-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Volkhov';
+  letter-spacing: 5px;
+  src: url('./assets/fonts/Volkhov-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Volkhov-Bold';
+  src: url('./assets/fonts/Volkhov-Bold.ttf') format('truetype');
 }
