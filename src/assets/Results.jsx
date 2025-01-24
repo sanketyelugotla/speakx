@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import "./Results.css";
 
-export default function Results({ isVisible, error, result, blocks }) {
+export default function Results({ isVisible, error, result }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [visibleSolutions, setVisibleSolutions] = useState({}); // Tracks which solutions are visible
   const itemsPerPage = 5;
 
   const validResult = result?.results || [];
@@ -30,29 +31,49 @@ export default function Results({ isVisible, error, result, blocks }) {
     </button>
   );
 
-  const displayMCQ = (item, index) => (
-    <div key={item._id?.$oid || item.title} className='que'>
-      <p className='q'>{index + 1}. {item.title}({item.type})</p>
-      <ol>
-        {item.options.map((opt, key) => (
-          <li key={key}>{opt.text}</li>
-        ))}
-      </ol>
-    </div>
-  );
+  const toggleSolution = (index) => {
+    setVisibleSolutions((prev) => ({
+      ...prev,
+      [index]: !prev[index], // Toggle visibility for the specific question
+    }));
+  };
+
+  const displayMCQ = (item, index) => {
+    // Find the correct solution before rendering options
+    const correctAnswer = item.options.find(opt => opt.isCorrectAnswer)?.text || "No solution available";
+
+    return (
+      <div key={item._id?.$oid || item.title} className='que'>
+        <p className='q'>{index + 1}. {item.title} ({item.type})</p>
+        <ol>
+          {item.options.map((opt, key) => (
+            <li key={key}>{opt.text}</li>
+          ))}
+        </ol>
+        <button onClick={() => toggleSolution(index)}>View Solution</button>
+        {visibleSolutions[index] && (
+          <p className='q'><strong>Solution:</strong> {correctAnswer}</p>
+        )}
+      </div>
+    );
+  };
 
   const displayBlocks = (item, index) => {
     const shuffledBlocks = item.blocks.map((block) => ({ ...block, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort);
+
     return (
       <div className='que'>
-        <strong><p className='q'>{index + 1}. {item.title}({item.type})</p></strong>
+        <strong><p className='q'>{index + 1}. {item.title} ({item.type})</p></strong>
         <ol>
-          {shuffledBlocks.map((block, index) => (
-            <li>{block.text}</li>
+          {shuffledBlocks.map((block, idx) => (
+            <li key={idx}>{block.text}</li>
           ))}
         </ol>
-        <p className='q'><strong>Solution:</strong> {item.solution}</p>
+        <button onClick={() => toggleSolution(index)}>View Solution</button>
+        {visibleSolutions[index] && (
+          <p className='q'><strong>Solution:</strong> {item.solution}</p>
+        )}
       </div>
     );
   };
@@ -73,16 +94,12 @@ export default function Results({ isVisible, error, result, blocks }) {
                 } else if (item.type === "READ_ALONG") {
                   return (
                     <div key={index} className='que'>
-                      <p className='q'>{index + 1}. {item.title}({item.type})</p>
-                      <p >Type: {item.type}</p>
+                      <p className='q'>{index + 1}. {item.title} ({item.type})</p>
+                      <p>Type: {item.type}</p>
                     </div>
                   );
                 } else {
-                  return (
-                    <div key={index} className='que'>
-                      {displayBlocks(item, index)}
-                    </div>
-                  );
+                  return displayBlocks(item, index);
                 }
               })}
             </div>
