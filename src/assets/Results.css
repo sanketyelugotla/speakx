@@ -49,8 +49,8 @@ ol {
     font-family: Algerian;
     position: fixed;
     font-size: 200px;
-    top: -275px;
-    left: -30px;
+    top: -280px;
+    left: -40px;
 }
 
 .que {
@@ -64,6 +64,7 @@ ol {
 
     span {
         font-family: Montserrat;
+        font-size: 16px;
     }
 }
 
@@ -84,14 +85,15 @@ ol {
     border: none;
     border-radius: 5px;
     transition: all 0.3s ease;
+    background-color: rgb(192, 98, 98);
 }
 
 .sol-btn:hover {
-    background-color: rgb(117, 122, 194);
+    background-color: rgba(52, 52, 160, 0.911);
 }
 
 .sol-btn.active {
-    background-color: rgb(52, 52, 160);
+    background-color: rgb(52, 52, 160)
 }
 
 strong {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import "./Results.css";
 
-export default function Results({ isVisible, error, result }) {
-  const [currentPage, setCurrentPage] = useState(1);
+export default function Results({ isVisible, error, result, currentPage, setCurrentPage }) {
+  
   const [visibleSolutions, setVisibleSolutions] = useState({}); // Tracks which solutions are visible
   const itemsPerPage = 5;
 
@@ -98,8 +98,13 @@ export default function Results({ isVisible, error, result }) {
                       {/* <p>Type: {item.type}</p> */}
                     </div>
                   );
-                } else {
+                } else if (item.type === "ANAGRAM") {
                   return displayBlocks(item, (itemsPerPage * (currentPage - 1)) + index);
+                }
+                else {
+                  return (
+                    <p>No results available</p>
+                  )
                 }
               })}
             </div>
@@ -107,7 +112,12 @@ export default function Results({ isVisible, error, result }) {
           <div className="pagination">
             {/* Previous Button */}
             {createButton(<img className='arrows' src='./left_arrow.png' alt="Left Arrow" />, currentPage - 1, currentPage === 1, true)}
-
+            {currentPage >= 4 && (
+              <>
+                {createButton(1, 1, currentPage === 1)}
+                <span className='dots'>....</span>
+              </>
+            )}
             {/* Page Numbers */}
             {Array.from({ length: Math.min(totalPages, 4) }, (_, index) => {
               const page = Math.max(1, currentPage - 2) + index;

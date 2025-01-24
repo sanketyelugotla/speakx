@@ -14,17 +14,27 @@ export default function App() {
     mcq: false,
   });
 
-  async function handleSearch() {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  function handleSearch() {
+    handleSearch2(50)
+    setTimeout(() => {
+
+    }, 2000)
+    handleSearch2(10000)
+  }
+
+  async function handleSearch2(limit) {
     setIsVisible(false);
+    setCurrentPage(1);
     try {
       // Construct query parameters based on filterButtons state
       const filters = Object.keys(filterButtons)
         .filter((key) => filterButtons[key])
         .map((key) => `${key}=true`)
         .join('&');
-
       const response = await fetch(
-        `http://localhost:3000/api/search?title=${title}&${filters}`
+        `http://localhost:3000/api/search?title=${title}&${filters}&limit=${limit}`
       );
 
       if (!response.ok) {
@@ -55,6 +65,8 @@ export default function App() {
         isVisible={isVisible}
         error={error}
         result={result}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
       />
     </div>
   );

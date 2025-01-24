@@ -59,12 +59,14 @@
         color: black;
         padding: 0 30px 0 60px;
         font-size: 20px;
-        box-shadow: 0 0 5px 1px rgb(155, 152, 152);
+        box-shadow: 0 0 7px 2px rgb(155, 152, 152);
+        /* border: 2px solid black; */
     }
 
     .title-input:focus {
-        box-shadow: 0 0 10px 1px rgb(155, 152, 152);
-        
+        box-shadow: 0 0 12px 2px rgb(155, 152, 152);
+        outline: none;
+
     }
 
     .input-open {
@@ -131,7 +133,8 @@ h2 {
 
     .f-button:hover {
         cursor: pointer;
-        background-color: rgba(52, 52, 160, 0.633);
+        border: none;
+        background-color: rgba(52, 52, 160, 0.76);
         /* background-color: rgba(0, 188, 240, 0.595); */
         color: white;
 
@@ -143,6 +146,7 @@ h2 {
     .f-button.active {
         background-color: rgb(52, 52, 160);
         color: white;
+        border: none;
     }
 }
 
