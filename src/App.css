@@ -28,6 +28,10 @@
 
     .exclamation {
         left: 117vh;
-        top: 32vh;
+        top: 27vh;
+    }
+
+    .question {
+        top: -23vh
     }
 }
