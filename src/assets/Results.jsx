@@ -52,7 +52,7 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
         </ol>
         <button className={`sol-btn ${visibleSolutions[index] ? "active" : ""}`} onClick={() => toggleSolution(index)}>View Solution</button>
         {visibleSolutions[index] && (
-          <p className='q'><strong>Solution:</strong> <span>{correctAnswer}</span></p>
+          <p className='q sol'><strong>Solution:</strong> <span>{correctAnswer}</span></p>
         )}
       </div>
     );
@@ -72,7 +72,7 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
         </ol>
         <button className={`sol-btn ${visibleSolutions[index] ? "active" : ""}`} onClick={() => toggleSolution(index)}>View Solution</button>
         {visibleSolutions[index] && (
-          <p className='q'><strong>Solution:</strong> <span>{item.solution}</span></p>
+          <p className='q sol'><strong>Solution:</strong> <span>{item.solution}</span></p>
         )}
       </div>
     );

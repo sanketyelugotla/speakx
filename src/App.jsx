@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Search from './assets/Search';
 import Results from './assets/Results';
+import Filters from './assets/Filters';
 import './App.css';
 
 export default function App() {
@@ -68,6 +69,7 @@ export default function App() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+      {/* <Filters /> */}
     </div>
   );
 }
