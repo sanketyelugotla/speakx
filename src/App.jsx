@@ -13,6 +13,8 @@ export default function App() {
     anagram: false,
     read: false,
     mcq: false,
+    content: false,
+    conversation: false
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +40,7 @@ export default function App() {
         .map((key) => `${key}=true`)
         .join('&');
       const response = await fetch(
-        `${base_call1}/api/search?title=${title}&${filters}&limit=${limit}`
+        `${base_call2}/api/search?title=${title}&${filters}&limit=${limit}`
       );
 
       if (!response.ok) {

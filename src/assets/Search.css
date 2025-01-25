@@ -1,6 +1,5 @@
 .heading-container {
     font-family: "Volkhov";
-    /* font-family: Nico Moji, sans-serif; */
     letter-spacing: 2px;
     margin: 30px 0;
     display: flex;
@@ -33,7 +32,7 @@
 .search-icon-inp {
     position: absolute;
     top: 73px;
-    left: -80px;
+    left: 18px;
     font-size: 34px;
     z-index: 2;
     pointer-events: none;
@@ -110,7 +109,7 @@ h2 {
     margin-top: 75px;
     align-items: center;
     justify-content: space-evenly;
-    width: 600px;
+    width: 800px;
     transition: opacity 1s ease;
     opacity: 1;
 
@@ -123,7 +122,7 @@ h2 {
         background-color: white;
         color: black;
         height: 35px;
-        width: 130px;
+        min-width: 130px;
         /* padding: 10px 15px; */
         border-radius: 8px;
         /* border: 1px solid rgb(52, 52, 160); */

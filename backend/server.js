@@ -38,7 +38,7 @@ connectToMongoDB().then(() => {
 
     // API route to search by title with pagination
     app.get('/api/search', async (req, res) => {
-        const { title = '', anagram, read, mcq, page = 1, limit = 50 } = req.query;
+        const { title = '', anagram, read, mcq, content, conversation, page = 1, limit = 50 } = req.query;
 
         try {
             if (!collection) {
@@ -52,6 +52,9 @@ connectToMongoDB().then(() => {
             if (anagram) types.push('ANAGRAM');
             if (read) types.push('READ_ALONG');
             if (mcq) types.push('MCQ');
+            if (content) types.push('CONTENT_ONLY')
+            if (conversation) types.push('CONVERSATION')
+
             if (types.length) query.type = { $in: types };
 
             const pageNumber = parseInt(page, 10);
@@ -65,6 +68,9 @@ connectToMongoDB().then(() => {
 
             const totalCount = await collection.countDocuments(query);
 
+            console.log(query);
+            // console.log(results);
+            
             return res.json({
                 results,
                 pagination: {

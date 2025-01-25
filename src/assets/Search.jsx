@@ -13,7 +13,6 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
     function inputChanged(event) {
         console.log(event.target.value)
         setTitle(event.target.value)
-        handleSearch()
     }
 
     function handleFilterButtonClick(event) {
@@ -32,7 +31,7 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
         } else {
             hasMounted.current = hasMounted.current + 1;
         }
-    }, [filterButtons]);
+    }, [filterButtons, title]);
 
     return (
         <div className='input'>
@@ -72,6 +71,20 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
                     onClick={handleFilterButtonClick}
                 >
                     MCQ
+                </button>
+                <button
+                    id="content"
+                    className={`f-button ${filterButtons.content ? "active" : ""}`}
+                    onClick={handleFilterButtonClick}
+                >
+                    CONTENT ONLY
+                </button>
+                <button
+                    id="conversation"
+                    className={`f-button ${filterButtons.conversation ? "active" : ""}`}
+                    onClick={handleFilterButtonClick}
+                >
+                    CONVERSATION
                 </button>
             </div>
 

@@ -91,7 +91,7 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
               {currentItems.map((item, index) => {
                 if (item.type === "MCQ") {
                   return displayMCQ(item, (itemsPerPage * (currentPage - 1)) + index);
-                } else if (item.type === "READ_ALONG") {
+                } else if (item.type === "READ_ALONG" || item.type === "CONTENT_ONLY" || item.type === "CONVERSATION") {
                   return (
                     <div key={index} className='que'>
                       <p className='q'><strong>{(itemsPerPage * (currentPage - 1)) + index + 1}. {item.title} ({item.type})</strong></p>
