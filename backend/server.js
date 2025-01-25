@@ -28,9 +28,9 @@ async function connectToMongoDB() {
     }
 }
 
-connectToMongoDB();
 
 app.get('/', (req, res) => {
+    connectToMongoDB();
     res.send('Hello, world!');
 });
 
