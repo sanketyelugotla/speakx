@@ -30,12 +30,12 @@ async function connectToMongoDB() {
 
 
 app.get('/', (req, res) => {
-    connectToMongoDB();
     res.send('Hello, world!');
 });
 
 // API route to search by title with pagination
 app.get('/api/search', async (req, res) => {
+    connectToMongoDB();
     const { title = '', anagram, read, mcq, page = 1, limit = 50 } = req.query;
 
     try {
