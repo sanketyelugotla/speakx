@@ -25,6 +25,9 @@ export default function App() {
     handleSearch2(10000)
   }
 
+  const base_call1 = "https://speakx-api.vercel.app";
+  const base_call2 = "http://localhost:3000";
+
   async function handleSearch2(limit) {
     setIsVisible(false);
     setCurrentPage(1);
@@ -35,7 +38,7 @@ export default function App() {
         .map((key) => `${key}=true`)
         .join('&');
       const response = await fetch(
-        `http://localhost:3000/api/search?title=${title}&${filters}&limit=${limit}`
+        `${base_call1}/api/search?title=${title}&${filters}&limit=${limit}`
       );
 
       if (!response.ok) {
