@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { v4 as rkey } from 'uuid';
-
-// const key = rkey();
 import "./Results.css";
 
 export default function Results({ isVisible, error, result, currentPage, setCurrentPage }) {
@@ -41,12 +39,30 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
     }));
   };
 
+  const renderContentByType = (item, index) => {
+    if (item.type === "MCQ") {
+      return displayMCQ(item, index);
+    } else if (["READ_ALONG", "CONTENT_ONLY", "CONVERSATION"].includes(item.type)) {
+      return displayText(item, index);
+    } else if (item.type === "ANAGRAM") {
+      return displayBlocks(item, index);
+    } else {
+      return <p className='err'>No Documents Found</p>;
+    }
+  };
+
+  const renderTitle = (item, index) => (
+    <p className='q'>
+      <strong>{index + 1}. {item.title} ({item.type})</strong>
+    </p>
+  );
+
   const displayMCQ = (item, index) => {
     const correctAnswer = item.options.find(opt => opt.isCorrectAnswer)?.text || "No solution available";
 
     return (
       <div key={rkey()} className='que'>
-        <p className='q'>{index + 1}. {item.title} ({item.type})</p>
+        {renderTitle(item, index)}
         <ol>
           {item.options.map((opt, key) => (
             <li key={rkey()}>{opt.text}</li>
@@ -66,7 +82,7 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
 
     return (
       <div key={rkey()} className='que'>
-        <strong><p className='q'>{index + 1}. {item.title} ({item.type})</p></strong>
+        {renderTitle(item, index)}
         <ol>
           {shuffledBlocks.map((block, idx) => (
             <li key={rkey()}>{block.text}</li>
@@ -80,6 +96,12 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
     );
   };
 
+  const displayText = (item, index) => (
+    <div key={rkey()} className='que'>
+      {renderTitle(item, index)}
+    </div>
+  );
+
   return (
     <>
       {validResult.length === 0 && <p className='err'>No Documents Found</p>}
@@ -90,25 +112,9 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
           <p className='exclamation'>!</p>
           <div className='scrollable'>
             <div className='inside'>
-              {currentItems.map((item, index) => {
-                if (item.type === "MCQ") {
-                  return displayMCQ(item, (itemsPerPage * (currentPage - 1)) + index);
-                } else if (item.type === "READ_ALONG" || item.type === "CONTENT_ONLY" || item.type === "CONVERSATION") {
-                  return (
-                    <div key={rkey} className='que'>
-                      <p className='q'><strong>{(itemsPerPage * (currentPage - 1)) + index + 1}. {item.title} ({item.type})</strong></p>
-                      {/* <p>Type: {item.type}</p> */}
-                    </div>
-                  );
-                } else if (item.type === "ANAGRAM") {
-                  return displayBlocks(item, (itemsPerPage * (currentPage - 1)) + index);
-                }
-                else {
-                  return (
-                    <p className='err'>No Documents Found</p>
-                  )
-                }
-              })}
+              {currentItems.map((item, index) =>
+                renderContentByType(item, (itemsPerPage * (currentPage - 1)) + index)
+              )}
             </div>
           </div>
           <div className="pagination">
