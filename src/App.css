@@ -5,3 +5,9 @@
     align-items: center;
     padding: 0 200px;
 }
+
+@media (max-width: 768px) {
+    .whole {
+        margin-left: 20px;
+    }
+}
