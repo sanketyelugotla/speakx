@@ -5,16 +5,18 @@ const { MongoClient } = require('mongodb');
 const app = express();
 app.use(cors());
 
-const connection_url = process.env.MONGO_CONNECTION_URL; // Use environment variable
-const dbName = 'speakx_questions';
-const collectionName = 'speakx_questions';
+// MongoDB connection URL and database name
+const connection_url =
+    'mongodb+srv://sanketyelugotla:sanket@speakx.abkna.mongodb.net/?retryWrites=true&w=majority&appName=speakx';
+const dbName = 'speakx_questions'; // Your database name
+const collectionName = 'speakx_questions'; // Your collection name
 
 let client;
 let db;
 let collection;
 
+// Establish connection to MongoDB once when the app starts
 async function connectToMongoDB() {
-    console.log("Attempting to connect to MongoDB...");
     try {
         client = new MongoClient(connection_url);
         await client.connect();
@@ -26,18 +28,9 @@ async function connectToMongoDB() {
     }
 }
 
-async function initializeApp() {
-    await connectToMongoDB();
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
-    });
-}
+connectToMongoDB();
 
-app.get('/', (req, res) => {
-    res.send('Hello, world!');
-});
-
+// API route to search by title with pagination
 app.get('/api/search', async (req, res) => {
     const { title = '', anagram, read, mcq, page = 1, limit = 50 } = req.query;
 
@@ -47,6 +40,8 @@ app.get('/api/search', async (req, res) => {
         }
 
         const query = { title: { $regex: "^" + title, $options: 'i' } };
+        console.log(query);
+        
 
         const types = [];
         if (anagram) types.push('ANAGRAM');
@@ -57,6 +52,8 @@ app.get('/api/search', async (req, res) => {
         const pageNumber = parseInt(page, 10);
         const limitNumber = parseInt(limit, 10);
 
+        // console.log(query)
+        
         const results = await collection
             .find(query)
             .skip((pageNumber - 1) * limitNumber)
@@ -79,4 +76,9 @@ app.get('/api/search', async (req, res) => {
     }
 });
 
-initializeApp();
+
+// Start the server
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
