@@ -9,7 +9,7 @@
 @media (max-width: 768px) {
     .whole {
         width: 100%;
-        margin-left: 31vh;
+        margin-left: 10vh;
         margin-right: 10vh;
     }
 
@@ -27,6 +27,6 @@
 
     .exclamation {
         left: 117vh;
-        top: 30vh;
+        top: 32vh;
     }
 }
