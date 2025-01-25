@@ -17,6 +17,8 @@ let collection;
 
 // Establish connection to MongoDB once when the app starts
 async function connectToMongoDB() {
+    console.log("Called connect");
+    
     try {
         client = new MongoClient(connection_url);
         await client.connect();
