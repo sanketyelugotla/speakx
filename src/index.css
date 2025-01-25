@@ -39,3 +39,8 @@
   font-family: 'Volkhov-Bold';
   src: url('./assets/fonts/Volkhov-Bold.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'Algerian';
+  src: url('./assets/fonts/Algerian.ttf') format('truetype');
+}
