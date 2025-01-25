@@ -9,6 +9,14 @@
 @media (max-width: 768px) {
     .whole {
         width: 100%;
-        margin-left: 50px;
+        margin-left: 10vh;
+    }
+
+    .search-icon-inp {
+        left: 2.2vh;
+    }
+
+    .scrollable {
+        width: 120vh;
     }
 }
