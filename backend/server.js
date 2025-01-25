@@ -18,6 +18,7 @@ let collection;
 // Establish connection to MongoDB once when the app starts
 async function connectToMongoDB() {
     try {
+        console.log("Attempting to connect to MongoDB...");
         client = new MongoClient(connection_url, { useUnifiedTopology: true });
         await client.connect();
         console.log('Connected to MongoDB');
@@ -29,61 +30,62 @@ async function connectToMongoDB() {
     }
 }
 
-connectToMongoDB();
+// Ensure MongoDB connection before proceeding
+connectToMongoDB().then(() => {
+    app.get('/', async (req, res) => {
+        res.send("Hello world")
+    });
 
-app.get('/', async(req, res) => {
-    res.send("Hello world")
-})
+    // API route to search by title with pagination
+    app.get('/api/search', async (req, res) => {
+        const { title = '', anagram, read, mcq, page = 1, limit = 50 } = req.query;
 
-// API route to search by title with pagination
-app.get('/api/search', async (req, res) => {
-    const { title = '', anagram, read, mcq, page = 1, limit = 50 } = req.query;
+        try {
+            if (!collection) {
+                return res.status(500).json({ message: 'Database connection is not available.' });
+            }
 
-    try {
-        if (!collection) {
-            return res.status(500).json({ message: 'Database connection is not available.' });
+            const query = { title: { $regex: "^" + title, $options: 'i' } };
+            console.log(query);
+            
+            const types = [];
+            if (anagram) types.push('ANAGRAM');
+            if (read) types.push('READ_ALONG');
+            if (mcq) types.push('MCQ');
+            if (types.length) query.type = { $in: types };
+
+            const pageNumber = parseInt(page, 10);
+            const limitNumber = parseInt(limit, 10);
+
+            const results = await collection
+                .find(query)
+                .skip((pageNumber - 1) * limitNumber)
+                .limit(limitNumber)
+                .toArray();
+
+            const totalCount = await collection.countDocuments(query);
+
+            return res.json({
+                results,
+                pagination: {
+                    currentPage: pageNumber,
+                    totalPages: Math.ceil(totalCount / limitNumber),
+                    totalCount,
+                },
+            });
+        } catch (error) {
+            console.error('Error:', error);
+            return res.status(500).json({ message: 'Internal server error' });
         }
+    });
 
-        const query = { title: { $regex: "^" + title, $options: 'i' } };
-        console.log(query);
-        
+    // Start the server after MongoDB is connected
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
 
-        const types = [];
-        if (anagram) types.push('ANAGRAM');
-        if (read) types.push('READ_ALONG');
-        if (mcq) types.push('MCQ');
-        if (types.length) query.type = { $in: types };
-
-        const pageNumber = parseInt(page, 10);
-        const limitNumber = parseInt(limit, 10);
-
-        // console.log(query)
-        
-        const results = await collection
-            .find(query)
-            .skip((pageNumber - 1) * limitNumber)
-            .limit(limitNumber)
-            .toArray();
-
-        const totalCount = await collection.countDocuments(query);
-
-        return res.json({
-            results,
-            pagination: {
-                currentPage: pageNumber,
-                totalPages: Math.ceil(totalCount / limitNumber),
-                totalCount,
-            },
-        });
-    } catch (error) {
-        console.error('Error:', error);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
-
-// Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+}).catch((error) => {
+    console.error("Failed to connect to MongoDB:", error);
+    process.exit(1); // Ensure the app doesn't start if MongoDB isn't connected
 });
