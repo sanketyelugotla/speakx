@@ -30,6 +30,8 @@ async function connectToMongoDB() {
 
 
 app.get('/', (req, res) => {
+    console.log("logged");
+    
     res.send('Hello, world!');
 });
 
