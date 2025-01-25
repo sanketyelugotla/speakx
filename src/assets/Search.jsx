@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
 import "./Search.css"
-import { useReducer } from "react";
 
 export default function Search({ title, setTitle, handleSearch, filterButtons, setFilterButtons }) {
     const [isInputOpen, setIsInputOpen] = useState(true);
@@ -23,11 +22,21 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
         }));
     }
 
-    const hasMounted = useRef(0)
+    const hasMounted = useRef(0);
+    const timerRef = useRef(null);
+
+    function debounce(func, delay) {
+        return function () {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+            }
+            timerRef.current = setTimeout(func, delay);
+        };
+    }
+
     useEffect(() => {
         if (hasMounted.current > 1) {
-            console.log("Use Effect")
-            handleSearch();
+            debounce(() => handleSearch(), 500)();
         } else {
             hasMounted.current = hasMounted.current + 1;
         }

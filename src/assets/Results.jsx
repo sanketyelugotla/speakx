@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { v4 as rkey } from 'uuid';
+
+// const key = rkey();
 import "./Results.css";
 
 export default function Results({ isVisible, error, result, currentPage, setCurrentPage }) {
-  
-  const [visibleSolutions, setVisibleSolutions] = useState({}); // Tracks which solutions are visible
+
+  const [visibleSolutions, setVisibleSolutions] = useState({});
   const itemsPerPage = 5;
 
   const validResult = result?.results || [];
@@ -21,7 +24,7 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
 
   const createButton = (label, pageNumber, isDisabled, first) => (
     <button
-      key={label}
+      key={rkey()}
       onClick={() => handlePageChange(pageNumber)}
       disabled={isDisabled}
       className={`page-buttons ${currentPage === pageNumber ? 'active' : ''}`}
@@ -34,20 +37,19 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
   const toggleSolution = (index) => {
     setVisibleSolutions((prev) => ({
       ...prev,
-      [index]: !prev[index], // Toggle visibility for the specific question
+      [index]: !prev[index],
     }));
   };
 
   const displayMCQ = (item, index) => {
-    // Find the correct solution before rendering options
     const correctAnswer = item.options.find(opt => opt.isCorrectAnswer)?.text || "No solution available";
 
     return (
-      <div key={item._id?.$oid || item.title} className='que'>
+      <div key={rkey()} className='que'>
         <p className='q'>{index + 1}. {item.title} ({item.type})</p>
         <ol>
           {item.options.map((opt, key) => (
-            <li key={key}>{opt.text}</li>
+            <li key={rkey()}>{opt.text}</li>
           ))}
         </ol>
         <button className={`sol-btn ${visibleSolutions[index] ? "active" : ""}`} onClick={() => toggleSolution(index)}>View Solution</button>
@@ -63,11 +65,11 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
       .sort((a, b) => a.sort - b.sort);
 
     return (
-      <div className='que'>
+      <div key={rkey()} className='que'>
         <strong><p className='q'>{index + 1}. {item.title} ({item.type})</p></strong>
         <ol>
           {shuffledBlocks.map((block, idx) => (
-            <li key={idx}>{block.text}</li>
+            <li key={rkey()}>{block.text}</li>
           ))}
         </ol>
         <button className={`sol-btn ${visibleSolutions[index] ? "active" : ""}`} onClick={() => toggleSolution(index)}>View Solution</button>
@@ -79,11 +81,11 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
   };
 
   return (
-    <div className={`docs ${isVisible ? '' : 'hide'}`}>
-      {error && <p className="red">{error}</p>}
-
-      {validResult.length > 0 && (
-        <div className="res_pag">
+    <>
+      {validResult.length === 0 && <p className='err'>No Documents Found</p>}
+      <div className={`docs ${isVisible ? '' : 'hide'}`}>
+        {error && <p className="red">{error}</p>}
+        <div className={`res_pag ${validResult.length > 0 ? "" : "hide"}`}>
           <p className='question'>?</p>
           <p className='exclamation'>!</p>
           <div className='scrollable'>
@@ -93,7 +95,7 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
                   return displayMCQ(item, (itemsPerPage * (currentPage - 1)) + index);
                 } else if (item.type === "READ_ALONG" || item.type === "CONTENT_ONLY" || item.type === "CONVERSATION") {
                   return (
-                    <div key={index} className='que'>
+                    <div key={rkey} className='que'>
                       <p className='q'><strong>{(itemsPerPage * (currentPage - 1)) + index + 1}. {item.title} ({item.type})</strong></p>
                       {/* <p>Type: {item.type}</p> */}
                     </div>
@@ -103,14 +105,13 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
                 }
                 else {
                   return (
-                    <p>No results available</p>
+                    <p className='err'>No Documents Found</p>
                   )
                 }
               })}
             </div>
           </div>
           <div className="pagination">
-            {/* Previous Button */}
             {createButton(<img className='arrows' src='./left_arrow.png' alt="Left Arrow" />, currentPage - 1, currentPage === 1, true)}
             {currentPage >= 4 && (
               <>
@@ -118,7 +119,6 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
                 <span className='dots'>....</span>
               </>
             )}
-            {/* Page Numbers */}
             {Array.from({ length: Math.min(totalPages, 4) }, (_, index) => {
               const page = Math.max(1, currentPage - 2) + index;
               return (
@@ -132,11 +132,10 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
                 {createButton(totalPages, totalPages, currentPage === totalPages)}
               </>
             )}
-            {/* Next Button */}
             {createButton(<img className='arrows' src='./right-arrow.png' alt="Right Arrow" />, currentPage + 1, currentPage === totalPages, true)}
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 }

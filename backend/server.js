@@ -5,17 +5,15 @@ const { MongoClient } = require('mongodb');
 const app = express();
 app.use(cors());
 
-// MongoDB connection URL and database name
 const connection_url =
     'mongodb+srv://sanketyelugotla:sanket@speakx.abkna.mongodb.net/?retryWrites=true&w=majority&appName=speakx';
-const dbName = 'speakx_questions'; // Your database name
-const collectionName = 'speakx_questions'; // Your collection name
+const dbName = 'speakx_questions';
+const collectionName = 'speakx_questions';
 
 let client;
 let db;
 let collection;
 
-// Establish connection to MongoDB once when the app starts
 async function connectToMongoDB() {
     try {
         console.log("Attempting to connect to MongoDB...");
@@ -26,17 +24,15 @@ async function connectToMongoDB() {
         collection = db.collection(collectionName);
     } catch (error) {
         console.error('Error connecting to MongoDB:', error.message);
-        process.exit(1); // Exit the application if the connection fails
+        process.exit(1);
     }
 }
 
-// Ensure MongoDB connection before proceeding
 connectToMongoDB().then(() => {
     app.get('/', async (req, res) => {
         res.send("Hello world")
     });
 
-    // API route to search by title with pagination
     app.get('/api/search', async (req, res) => {
         const { title = '', anagram, read, mcq, content, conversation, page = 1, limit = 50 } = req.query;
 
@@ -85,7 +81,6 @@ connectToMongoDB().then(() => {
         }
     });
 
-    // Start the server after MongoDB is connected
     const port = process.env.PORT || 3000;
     app.listen(port, () => {
         console.log(`Server running on port ${port}`);
@@ -93,5 +88,5 @@ connectToMongoDB().then(() => {
 
 }).catch((error) => {
     console.error("Failed to connect to MongoDB:", error);
-    process.exit(1); // Ensure the app doesn't start if MongoDB isn't connected
+    process.exit(1);
 });
