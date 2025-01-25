@@ -9,7 +9,7 @@
 @media (max-width: 768px) {
     .whole {
         width: 100%;
-        margin-left: 10vh;
+        margin-left: 15vh;
         margin-right: 10vh;
     }
 
@@ -18,7 +18,7 @@
     }
 
     .scrollable {
-        margin-top: 4vh;
+        margin-top: 5vh;
         width: 115vh;
     }
 
