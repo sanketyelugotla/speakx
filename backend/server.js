@@ -18,13 +18,14 @@ let collection;
 // Establish connection to MongoDB once when the app starts
 async function connectToMongoDB() {
     try {
-        client = new MongoClient(connection_url);
+        client = new MongoClient(connection_url, { useUnifiedTopology: true });
         await client.connect();
         console.log('Connected to MongoDB');
         db = client.db(dbName);
         collection = db.collection(collectionName);
     } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
+        console.error('Error connecting to MongoDB:', error.message);
+        process.exit(1); // Exit the application if the connection fails
     }
 }
 
