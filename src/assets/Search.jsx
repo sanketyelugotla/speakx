@@ -22,7 +22,7 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
         }));
     }
 
-    const hasMounted = useRef(0);
+    // const hasMounted = useRef(0);
     const timerRef = useRef(null);
 
     function debounce(func, delay) {
@@ -35,11 +35,8 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
     }
 
     useEffect(() => {
-        if (hasMounted.current > 1) {
-            debounce(() => handleSearch(), 500)();
-        } else {
-            hasMounted.current = hasMounted.current + 1;
-        }
+        debounce(() => handleSearch(), 500)();
+
     }, [filterButtons, title]);
 
     return (
