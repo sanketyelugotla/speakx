@@ -9,9 +9,10 @@
 
 ol {
     margin: 0;
+    margin-left: 40px;
     margin-top: 5px;
-    list-style: lower-alpha;
     font-family: Montserrat;
+    list-style: lower-alpha;
 
     li::marker {
         font-family: Volkhov;
@@ -36,7 +37,7 @@ ol {
     font-family: Algerian;
     position: fixed;
     font-size: 200px;
-    top: 350px;
+    top: 570px;
     left: 1420px;
 }
 
@@ -45,7 +46,7 @@ ol {
     font-family: Algerian;
     position: fixed;
     font-size: 200px;
-    top: -280px;
+    top: -100px;
     left: -40px;
 }
 

@@ -30,7 +30,7 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
   useEffect(() => {
     updateItemsPerPage();
     window.addEventListener("resize", updateItemsPerPage);
-    // return () => window.removeEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
   }, [result]);
 
   const handlePageChange = (pageNumber) => {
@@ -80,7 +80,7 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
     return (
       <div key={rkey()} className='que'>
         {renderTitle(item, index)}
-        <ol>
+        <ol type='a'>
           {item.options.map((opt, key) => (
             <li key={rkey()}>{opt.text}</li>
           ))}
