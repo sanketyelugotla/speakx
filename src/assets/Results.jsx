@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { v4 as rkey } from 'uuid';
 import "./Results.css";
 
 export default function Results({ isVisible, error, result, currentPage, setCurrentPage }) {
-
   const [visibleSolutions, setVisibleSolutions] = useState({});
-  const itemsPerPage = 5;
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const containerRef = useRef(null);
 
   const validResult = result?.results || [];
   const totalItems = validResult.length;
@@ -15,6 +15,23 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const updateItemsPerPage = () => {
+    const containerHeight = containerRef.current?.offsetHeight || 0;
+    console.log(containerHeight);
+
+    if (containerHeight < 580) {
+      setItemsPerPage(12);
+    } else {
+      setItemsPerPage(5);
+    }
+  };
+
+  useEffect(() => {
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    // return () => window.removeEventListener("resize", updateItemsPerPage);
+  }, [result]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -111,7 +128,7 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
           <p className='question'>?</p>
           <p className='exclamation'>!</p>
           <div className='scrollable'>
-            <div className='inside'>
+            <div className='inside' ref={containerRef}>
               {currentItems.map((item, index) =>
                 renderContentByType(item, (itemsPerPage * (currentPage - 1)) + index)
               )}

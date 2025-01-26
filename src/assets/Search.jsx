@@ -10,7 +10,7 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
     }
 
     function inputChanged(event) {
-        console.log(event.target.value)
+        // console.log(event.target.value)
         setTitle(event.target.value)
     }
 
@@ -35,8 +35,7 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
     }
 
     useEffect(() => {
-        debounce(() => handleSearch(), 500)();
-
+        debounce(() => handleSearch(), 400)();
     }, [filterButtons, title]);
 
     return (

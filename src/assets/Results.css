@@ -21,7 +21,7 @@ ol {
 .inside {
     overflow-y: auto;
     margin: 30px 30px 30px 60px;
-    height: 90%;
+    max-height: 90%;
     width: 90%;
     /* background-color: rgb(12, 12, 17); */
     /* background-color: white; */

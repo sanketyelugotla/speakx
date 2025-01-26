@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Search from './assets/Search';
 import Results from './assets/Results';
 import Filters from './assets/Filters';
+import About from './assets/About';
 import './App.css';
 
 export default function App() {
@@ -20,7 +21,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
 
   function handleSearch() {
-    // console.log("Effect");
+    console.log("Effect");
 
     handleSearch2(50)
     setTimeout(() => {
@@ -76,6 +77,7 @@ export default function App() {
         setCurrentPage={setCurrentPage}
       />
       {/* <Filters /> */}
+      <About />
     </div>
   );
 }
