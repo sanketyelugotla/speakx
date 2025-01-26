@@ -21,7 +21,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
 
   function handleSearch() {
-    console.log("Effect");
+    // console.log("Effect");
 
     handleSearch2(50)
     setTimeout(() => {
@@ -36,6 +36,7 @@ export default function App() {
   async function handleSearch2(limit) {
     setIsVisible(false);
     setCurrentPage(1);
+    // console.log(filterButtons)
     try {
       const filters = Object.keys(filterButtons)
         .filter((key) => filterButtons[key])

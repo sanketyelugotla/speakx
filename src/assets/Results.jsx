@@ -4,7 +4,7 @@ import "./Results.css";
 
 export default function Results({ isVisible, error, result, currentPage, setCurrentPage }) {
   const [visibleSolutions, setVisibleSolutions] = useState({});
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(15);
   const containerRef = useRef(null);
 
   const validResult = result?.results || [];
@@ -16,22 +16,22 @@ export default function Results({ isVisible, error, result, currentPage, setCurr
     currentPage * itemsPerPage
   );
 
-  const updateItemsPerPage = () => {
-    const containerHeight = containerRef.current?.offsetHeight || 0;
-    console.log(containerHeight);
+  // const updateItemsPerPage = () => {
+  //   const containerHeight = containerRef.current?.offsetHeight || 0;
+  //   console.log(containerHeight);
 
-    if (containerHeight < 580) {
-      setItemsPerPage(12);
-    } else {
-      setItemsPerPage(5);
-    }
-  };
+  //   if (containerHeight < 580) {
+  //     setItemsPerPage(12);
+  //   } else {
+  //     setItemsPerPage(5);
+  //   }
+  // };
 
-  useEffect(() => {
-    updateItemsPerPage();
-    window.addEventListener("resize", updateItemsPerPage);
-    return () => window.removeEventListener("resize", updateItemsPerPage);
-  }, [result]);
+  // useEffect(() => {
+  //   updateItemsPerPage();
+  //   window.addEventListener("resize", updateItemsPerPage);
+  //   return () => window.removeEventListener("resize", updateItemsPerPage);
+  // }, [result]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);

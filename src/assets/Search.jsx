@@ -24,19 +24,24 @@ export default function Search({ title, setTitle, handleSearch, filterButtons, s
 
     // const hasMounted = useRef(0);
     const timerRef = useRef(null);
-
-    function debounce(func, delay) {
-        return function () {
-            if (timerRef.current) {
-                clearTimeout(timerRef.current);
-            }
-            timerRef.current = setTimeout(func, delay);
+    const debouncedHandleSearch = (func, delay) => {
+        return (...args) => {
+          if (timerRef.current) {
+            clearTimeout(timerRef.current);
+          }
+          timerRef.current = setTimeout(() => {
+            func(...args);
+          }, delay);
         };
-    }
-
-    useEffect(() => {
-        debounce(() => handleSearch(), 400)();
-    }, [filterButtons, title]);
+      };
+    
+      // Debounce the handleSearch function
+      const debouncedSearch = debouncedHandleSearch(handleSearch, 400);
+    
+      useEffect(() => {
+        debouncedSearch(); // Call debounced function when dependencies change
+        return () => clearTimeout(timerRef.current); // Cleanup timeout on unmount or dependency change
+      }, [filterButtons, title]); // Only rerun when these change
 
     return (
         <div className='input'>

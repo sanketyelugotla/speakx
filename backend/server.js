@@ -16,14 +16,14 @@ let collection;
 
 async function connectToMongoDB() {
     try {
-        console.log("Attempting to connect to MongoDB...");
+        // console.log("Attempting to connect to MongoDB...");
         client = new MongoClient(connection_url, { useUnifiedTopology: true });
         await client.connect();
-        console.log('Connected to MongoDB');
+        // console.log('Connected to MongoDB');
         db = client.db(dbName);
         collection = db.collection(collectionName);
     } catch (error) {
-        console.error('Error connecting to MongoDB:', error.message);
+        // console.error('Error connecting to MongoDB:', error.message);
         process.exit(1);
     }
 }
@@ -42,7 +42,7 @@ connectToMongoDB().then(() => {
             }
 
             const query = { title: { $regex: "^" + title, $options: 'i' } };
-            console.log(query);
+            // console.log(query);
             
             const types = [];
             if (anagram) types.push('ANAGRAM');
@@ -56,6 +56,9 @@ connectToMongoDB().then(() => {
             const pageNumber = parseInt(page, 10);
             const limitNumber = parseInt(limit, 10);
 
+            // console.log(query);
+            
+
             const results = await collection
                 .find(query)
                 .skip((pageNumber - 1) * limitNumber)
@@ -64,7 +67,7 @@ connectToMongoDB().then(() => {
 
             const totalCount = await collection.countDocuments(query);
 
-            console.log(query);
+            // console.log(query);
             // console.log(results);
             
             return res.json({
@@ -83,10 +86,10 @@ connectToMongoDB().then(() => {
 
     const port = process.env.PORT || 3000;
     app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
+        // console.log(`Server running on port ${port}`);
     });
 
 }).catch((error) => {
-    console.error("Failed to connect to MongoDB:", error);
+    // console.error("Failed to connect to MongoDB:", error);
     process.exit(1);
 });
