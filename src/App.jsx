@@ -61,23 +61,25 @@ export default function App() {
   }
 
   return (
-    <div className='whole'>
-      <Search
-        title={title}
-        setTitle={setTitle}
-        handleSearch={handleSearch}
-        filterButtons={filterButtons}
-        setFilterButtons={setFilterButtons}
-      />
-      <Results
-        isVisible={isVisible}
-        error={error}
-        result={result}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-      {/* <Filters /> */}
+    <>
+      <div className='whole'>
+        <Search
+          title={title}
+          setTitle={setTitle}
+          handleSearch={handleSearch}
+          filterButtons={filterButtons}
+          setFilterButtons={setFilterButtons}
+        />
+        <Results
+          isVisible={isVisible}
+          error={error}
+          result={result}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+        {/* <Filters /> */}
+      </div>
       <About />
-    </div>
+    </>
   );
 }
